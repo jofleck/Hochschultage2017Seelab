@@ -1,0 +1,6 @@
+#JSGF V1.0
+grammar test;
+  public <basicCmd> =  <startCommand> <switchCommand>;
+  <startCommand> = computer;
+  <switchCommand> = switch the light (on | off);
+

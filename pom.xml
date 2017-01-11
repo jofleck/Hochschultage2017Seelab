@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>de.seelab</groupId>
+    <artifactId>speechworkshop</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <properties>
+        <seelab.maven.repository.url>172.22.99.16/var/www/maven/repository</seelab.maven.repository.url>
+        <wagon.ssh.version>2.10</wagon.ssh.version>
+    </properties>
+
+    <distributionManagement>
+        <repository>
+            <id>seelab</id>
+            <url>scp://${seelab.maven.repository.url}</url>
+        </repository>
+    </distributionManagement>
+
+    <repositories>
+    <repository>
+        <id>snapshots-repo</id>
+        <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        <releases><enabled>false</enabled></releases>
+        <snapshots><enabled>true</enabled></snapshots>
+    </repository>
+</repositories>
+<dependencies>
+    <dependency>
+        <groupId>edu.cmu.sphinx</groupId>
+        <artifactId>sphinx4-core</artifactId>
+        <version>5prealpha-SNAPSHOT</version>
+    </dependency>
+
+    <dependency>
+        <groupId>edu.cmu.sphinx</groupId>
+        <artifactId>sphinx4-data</artifactId>
+        <version>5prealpha-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+        <groupId>com.philips</groupId>
+        <artifactId>huelocal</artifactId>
+        <version>1.0</version>
+        <scope>system</scope>
+        <systemPath>${project.basedir}/src/main/resources/huelocalsdk.jar</systemPath>
+    </dependency>
+    <dependency>
+        <groupId>com.philips</groupId>
+        <artifactId>hueresources</artifactId>
+        <version>1.0</version>
+        <scope>system</scope>
+        <systemPath>${project.basedir}/src/main/resources/huesdkresources.jar</systemPath>
+    </dependency>
+</dependencies>
+
+    <build>
+
+
+        <resources>
+        <resource>
+            <directory>src/main/java/grammars</directory>
+            <excludes>
+            </excludes>
+        </resource>
+    </resources>
+
+        <extensions>
+            <extension>
+                <groupId>org.apache.maven.wagon</groupId>
+                <artifactId>wagon-ssh</artifactId>
+                <version>${wagon.ssh.version}</version>
+            </extension>
+        </extensions>
+
+        <plugins>
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <mainClass>de.seelab.speechlight.SpeechRecognizer</mainClass>
+                        </manifest>
+                    </archive>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                </configuration>
+                <executions>
+                <execution>
+                    <id>make-assembly</id>
+                    <phase>package</phase>
+                    <goals>
+                        <goal>single</goal>
+                    </goals>
+                </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+
+
+
+
+
+</project>
